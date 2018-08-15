@@ -1,24 +1,23 @@
 // Business Logic
 function isWord(userText) {
-  return userText.split(" ");
+  return userText.split(/(\.|,|"| |!|\?)/);
 }
 
 function ay(word) {
-  var firstVowel = word.search(/[aeiouy]/gi);
-  var firstLetter = word.charAt(0)
-
+  var firstVowelPosition = word.search(/[aeiouy]/gi);
+  var firstLetter = word.charAt(0);
 
   if (firstLetter.match(/[aeiou]/gi)) {
     word = word + "way";
     return word;
-  } else if (firstLetter.match(/[a-z]/gi) && firstVowel !== -1){
-    if (word.charAt(firstVowel) == "u" && word.charAt(firstVowel-1) == "q"){
-      return word.substr(firstVowel+1) + word.substr(0,firstVowel+1) + "ay"
+  } else if (firstLetter.match(/[a-z]/gi) && firstVowelPosition !== -1){
+    if (word.charAt(firstVowelPosition) == "u" && word.charAt(firstVowelPosition-1) == "q"){
+      return word.substr(firstVowelPosition+1) + word.substr(0,firstVowelPosition+1) + "ay";
     } else {
-      return word.substr(firstVowel) + word.substr(0,firstVowel) + "ay"
+      return word.substr(firstVowelPosition) + word.substr(0,firstVowelPosition) + "ay";
     }
   } else {
-    return word
+    return word;
   }
 }
 
@@ -27,17 +26,11 @@ function ay(word) {
 $(document).ready(function() {
   $("#latinForm").submit(function(event) {
     event.preventDefault();
-    console.log("2");
     var userInput = $(".userInput").val().toLowerCase();
-
-    var answer = ""
+    var answer = "";
     isWord(userInput).forEach(function(word){
-      answer += ay(word) + " ";
+      answer += ay(word);
     })
-
-
     $(".answer").text(answer);
-
-
   });
 });
